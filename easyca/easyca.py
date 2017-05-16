@@ -66,5 +66,4 @@ def parse_args():
         elif args.action == 'create_ca':
             commands.create_ca.parse_create_ca_args(CFG)
 
-
 parse_args()
