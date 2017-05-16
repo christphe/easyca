@@ -1,8 +1,7 @@
 # easyca files
-demoCA
-certs
-ca.cfg
-*.pass
+/demoCA
+/ca.cfg
+/*.pass
 
 # IDE files
 .vscode
