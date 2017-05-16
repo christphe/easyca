@@ -1,0 +1,10 @@
+FROM ubuntu
+
+RUN apt-get update -y
+RUN apt-get upgrade -y
+RUN apt-get install -y openssl
+# disable cache
+COPY dist/date date
+COPY dist/easyca /usr/bin/easyca
+COPY files/docker-ca/* ./
+RUN /usr/bin/easyca create_ca && /usr/bin/easyca create_cert server

@@ -1,0 +1,5 @@
+FROM nginx:alpine
+
+COPY files/docker-server/default.conf /etc/nginx/conf.d/default.conf
+COPY dist/certs/server/server-fullchain.pem /etc/ssl/certs/server-fullchain.pem
+COPY dist/certs/server/server.key /etc/ssl/private/server.key
