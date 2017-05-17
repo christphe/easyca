@@ -4,4 +4,4 @@
 rm -rf dist
 
 ## stop server
-docker stop easyca-server > /dev/null 2>&1 
+docker-compose down

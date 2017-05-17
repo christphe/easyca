@@ -1,0 +1,5 @@
+FROM httpd:2.4-alpine
+
+COPY files/docker-proxy/httpd.conf /usr/local/apache2/conf/httpd.conf
+COPY files/docker-proxy/extra/httpd-vhosts.conf /usr/local/apache2/conf/extra/httpd-vhosts.conf
+COPY dist/cacert.pem /usr/local/apache2/conf/ssl.crt/cacert.pem

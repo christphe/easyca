@@ -12,8 +12,8 @@ docker cp $(cat .cid):demoCA/cacert.pem ./dist/cacert.pem
 docker rm $(cat .cid)
 rm .cid
 
-## creating server
-docker build --no-cache . -f dockerfiles/Dockerfile.server -t easyca/dockertest-server
+## creating servers
+docker-compose build
 
 ## creating client
 docker build . -f dockerfiles/Dockerfile.cli -t easyca/dockertest-cli
