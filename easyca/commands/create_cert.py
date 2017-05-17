@@ -29,7 +29,7 @@ def create_cert(cfg, domain_name, force=False):
                    '-notext', '-days %(CRT_DAYS)s' % cfg.map,
                    '-out %(cd)s/%(d)s.crt' % repl,
                    '-infiles %(cd)s/%(d)s.req' % repl]))
-    call('cat %(cd)s/%(d)s.key %(cd)s/%(d)s.crt > %(cd)s/%(d)s-fullchain.pem' %
+    call('cat %(cd)s/%(d)s.crt %(t)s/cacert.pem > %(cd)s/%(d)s-fullchain.pem' %
          repl)
     # chmod go= $1.crt $1.key $1.req
 
