@@ -6,10 +6,11 @@ import shutil
 from utils.shell import call
 from utils.openssl_api import openssl
 
+
 def create_cert(cfg, domain_name, force=False):
     """ Create a new certificate for domain name. """
 
-    repl = {"t" : cfg.get("CA_TOP"), "d": domain_name}
+    repl = {"t": cfg.get("CA_TOP"), "d": domain_name}
     repl["cd"] = '%(t)s/certs/%(d)s' % repl
 
     if os.path.exists(repl["cd"]) and not force:
@@ -20,15 +21,19 @@ def create_cert(cfg, domain_name, force=False):
     os.mkdir(repl["cd"])
 
     config_file = cfg.create_config_file(domain_name)
+    if cfg.get("CAKEY_PASSPHRASE") == "stdin":
+        password = input("Enter CAKEY_PASSPHRASE: ")
+
     print(openssl(['req', '-new', '-nodes', '-keyout',
                    '%(cd)s/%(d)s.key' % repl,
                    '-out %(cd)s/%(d)s.req' % repl,
-                   '-days %(CRT_DAYS)s' % cfg.map, '-config %s' % config_file.name]))
+                   '-days %(CRT_DAYS)s' % cfg.map, '-config %s' % config_file.name],
+                  write=password))
     print(openssl(['ca', '-batch', '-passin %(CAKEY_PASSPHRASE)s' % cfg.map,
                    '-policy policy_anything',
                    '-notext', '-days %(CRT_DAYS)s' % cfg.map,
                    '-out %(cd)s/%(d)s.crt' % repl,
-                   '-infiles %(cd)s/%(d)s.req' % repl]))
+                   '-infiles %(cd)s/%(d)s.req' % repl], write=password))
     call('cat %(cd)s/%(d)s.crt %(t)s/cacert.pem > %(cd)s/%(d)s-fullchain.pem' %
          repl)
     # chmod go= $1.crt $1.key $1.req
@@ -36,6 +41,7 @@ def create_cert(cfg, domain_name, force=False):
     os.unlink(config_file.name)
 
     return domain_name
+
 
 def parse_create_cert_args(cfg):
     """ Parse create_cert arguments."""
